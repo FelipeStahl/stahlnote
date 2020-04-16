@@ -132,6 +132,15 @@
     </editor-menu-bar>
 
     <editor-content class="editor__content" :editor="editor" />
+
+    <div class="export">
+      <h3>JSON</h3>
+      <pre><code v-html="json"></code></pre>
+
+      <h3>HTML</h3>
+      <pre><code>{{ html }}</code></pre>
+    </div>
+    <v-btn @click="submit()" color="primary">salvar</v-btn>
   </div>
 </template>
 
@@ -165,6 +174,11 @@ export default {
   },
   data() {
     return {
+      loading: false,
+      html: `
+          <h2>
+            Hi there,
+          </h2>`,
       editor: new Editor({
         extensions: [
           new Blockquote(),
@@ -207,11 +221,93 @@ export default {
             – mom
           </blockquote>
         `,
+        onUpdate: ({ getJSON, getHTML }) => {
+          this.json = getJSON()
+          this.html = getHTML()       
+        }
       }),
+      json: 'Update content to see changes',     
     }
   },
   beforeDestroy() {
     this.editor.destroy()
   },
-}
+  created () {
+    this.getData()
+  },
+  methods: {
+    getData () {
+      const ref = this.$firebase.database().ref(`/${window.uid}`)
+        ref.on('value', data => {
+        const values = data.val()
+        this.expenses = Object.keys(values).map(i => values[i])  
+        this.setContent(this.expenses[0].textcontent)        
+      })
+    },
+    setContent(values) {
+      // you can pass a json document
+      this.editor.setContent(values)
+      // HTML string is also supported
+      // this.editor.setContent('<p>This is some inserted text. 👋</p>')
+      this.editor.focus()
+    },
+    openFileDialog () {
+      this.$refs.input.value = null
+      this.$refs.input.click()
+    },
+    handleFile ({ target }) {
+      this.form.receipt = target.files[0]
+    },
+    showMensagem(mensagem){
+      // eslint-disable-next-line no-console
+      console.log(mensagem)
+    },
+    async submit () {
+      this.loading = true
+
+      try {
+        this.$root.$emit('Spinner::show')
+        const ref = this.$firebase.database().ref(window.uid)
+        const id = '-M5-q5FCTqdQkSNcwQFN' // ref.push().key
+
+        const payload = {
+          id,
+          textcontent: this.html,
+          createdAt: new Date().getTime()
+        }
+
+        ref.child(id).set(payload, err => {
+          if (err) {
+            this.$root.$emit('Notification::show', {
+              type: 'danger',
+              message: 'Não foi possível inserir o gasto, tente novamente.'
+            })
+            this.loading = false
+          } else {
+            this.$root.$emit('Notification::show', {
+              type: 'success',
+              message: 'Gasto inserido com sucesso.'
+            })
+            this.showMensagem("inserido com sucesso")
+            this.loading = false
+          }
+        })
+      } catch (err) {
+        this.$root.$emit('Notification::show', {
+          type: 'danger',
+          message: 'Não foi possível inserir o gasto, tente novamente.'
+        })
+        this.showMensagem(err)
+        this.loading = false
+      } finally {
+        this.$root.$emit('Spinner::hide')
+        this.loading = false
+      }
+    }
+  },
+    closeModal () {
+      this.showModal = false
+    }
+  }
+
 </script>

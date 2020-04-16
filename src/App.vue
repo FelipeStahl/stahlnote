@@ -1,60 +1,81 @@
 <template>
-  <v-app>
+  <v-app id="inspire">
+    <base-spinner/>
+    <layout-notification/>
+    <layout-navigation :drawer="drawer"/>
+
     <v-app-bar
       app
-      color="primary"
+      color="indigo"
       dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>open_in_new</v-icon>
-      </v-btn>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title>Application</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+      <v-container
+        class="fill-height"
+        fluid
+      >
+        <router-view />
+      </v-container>
     </v-content>
+    <v-footer
+      color="indigo"
+      app
+    >
+      <span class="white--text">&copy; 2019</span>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import BaseSpinner from './components/global/BaseSpinner'
+import LayoutNotification from './components/layout/LayoutNotification'
+import LayoutNavigation from './components/layout/LayoutNavigation'
 
 export default {
   name: 'App',
-
+  props: {
+      source: String,
+    },
   components: {
-    HelloWorld,
+    BaseSpinner,
+    LayoutNotification,
+    LayoutNavigation
   },
+  data: () => ({ 
+    isLogged: false,
+    drawer: true,
+    }),
+  mounted () {
+    this.$firebase.auth().onAuthStateChanged(user => {
+      window.uid = user ? user.uid : null
+      this.isLogged = !!user
 
-  data: () => ({
-    //
-  }),
-};
+      this.$router.push({ name: window.uid ? 'home' : 'login' })
+
+      setTimeout(() => {
+        this.$root.$emit('Spinner::hide')
+      }, 300)
+    })
+  }
+}
 </script>
+
+<style lang="scss">
+#app {
+  min-height: 100vh;
+  color: var(--light);
+  background-color: var(--darker);
+  .navigation-sidebar {
+    background-color: var(--dark-medium);
+    .app-title {
+      font-size: 20pt;
+      margin-top: 10px;
+      text-align: center;
+    }
+  }
+}
+</style>

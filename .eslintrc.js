@@ -11,7 +11,32 @@ module.exports = {
     parser: 'babel-eslint'
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+
+
+    // error handling
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+
+    // indent
+    'no-tabs': 'off',
+    'indent': 'off',
+
+    // disable some import stuff
+    'import/extensions': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    'import/no-unresolved': 'off',
+    'import/no-dynamic-require': 'off',
+
+    // disable for '__svg__'
+    'no-underscore-dangle': 'off',
+
+    'arrow-parens': ['error', 'as-needed'],
+
+    'padded-blocks': 'off',
+
+    'class-methods-use-this': 'off',
+
+    'global-require': 'off',
+
+    'func-names': ['error', 'never'],
   }
 }

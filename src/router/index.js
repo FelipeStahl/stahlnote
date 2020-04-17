@@ -21,6 +21,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "editor" */ '../pages/editor/Basic')
   },
   {
+    path: '/editorMedium',
+    name: 'editorMedium',
+    meta: {
+      icon: 'home', title: 'Editor Médio'
+    },
+    component: () => import(/* webpackChunkName: "editor" */ '../pages/editor/Medium')
+  },
+  {
     name: 'expenses-list',
     path: '/expenses-list',
     meta: {

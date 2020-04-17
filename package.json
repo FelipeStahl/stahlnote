@@ -11,6 +11,7 @@
     "@fortawesome/fontawesome-free": "^5.13.0",
     "core-js": "^3.6.4",
     "firebase": "^7.13.2",
+    "highlight.js": "^9.18.1",
     "lodash.groupby": "^4.6.0",
     "material-design-icons-iconfont": "^5.0.1",
     "register-service-worker": "^1.7.1",

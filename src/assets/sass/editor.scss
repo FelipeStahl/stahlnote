@@ -14,27 +14,20 @@
     }
 
     pre {
-      padding: 0.7rem 1rem;
+      padding: 0.0rem 1rem 0.7rem;
       border-radius: 5px;
       background: $color-black;
       color: $color-white;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       overflow-x: auto;
 
       code {
         display: block;
+        background-color: $color-black;
       }
     }
 
-    p code {
-      display: inline-block;
-      padding: 0 0.4rem;
-      border-radius: 5px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      background: rgba($color-black, 0.1);
-      color: rgba($color-black, 0.8);
-    }
+
 
     ul,
     ol {

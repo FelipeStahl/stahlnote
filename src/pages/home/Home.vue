@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import firebase from '../../firebase'
+
 export default {
   name: 'Home',
   data: () => ({
@@ -61,7 +63,7 @@ export default {
   },
   methods: {
     getData () {
-      const ref = this.$firebase.database().ref(`/${window.uid}`)
+      const ref = firebase.database().ref(`/${window.uid}`)
 
       ref.on('value', data => {
         const values = data.val()

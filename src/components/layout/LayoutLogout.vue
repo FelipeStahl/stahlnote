@@ -6,12 +6,13 @@
 </template>
 
 <script>
+import firebase from '../../firebase'
 export default {
   methods: {
     async logout () {
       this.$root.$emit('Spinner::show')
 
-      await this.$firebase.auth().signOut()
+      await firebase.auth().signOut()
 
       this.$router.push({ name: 'login' })
 

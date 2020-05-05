@@ -116,6 +116,7 @@
           default:
             message = 'Não foi possível fazer login, tente novamente'
         }
+        // eslint-disable-next-line no-console
         console.log("Erro login: " + message)
       }
 

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import AuthGuard from './auth-guard'
 
 Vue.use(VueRouter)
 
@@ -10,7 +11,8 @@ const routes = [
     meta: {
       icon: 'home', title: 'Home'
     },
-    component: () => import(/* webpackChunkName: "home" */ '../pages/home/Home')
+    component: () => import(/* webpackChunkName: "home" */ '../pages/home/Home'),
+    beforeEnter: AuthGuard
   },
   {
     path: '/editor',
@@ -18,7 +20,8 @@ const routes = [
     meta: {
       icon: 'home', title: 'Editor Básico'
     },
-    component: () => import(/* webpackChunkName: "editor" */ '../pages/editor/Basic')
+    component: () => import(/* webpackChunkName: "editor" */ '../pages/editor/Basic'),
+    beforeEnter: AuthGuard
   },
   {
     path: '/editorMedium',
@@ -26,7 +29,8 @@ const routes = [
     meta: {
       icon: 'home', title: 'Editor Médio'
     },
-    component: () => import(/* webpackChunkName: "editor" */ '../pages/editor/Medium')
+    component: () => import(/* webpackChunkName: "editor" */ '../pages/editor/Medium'),
+    beforeEnter: AuthGuard
   },
   {
     name: 'expenses-list',
@@ -37,7 +41,8 @@ const routes = [
     component: () => import(
       /* webpackChunkName: "expenses-list" */
       '../pages/expenses-list/ExpensesList'
-    )
+    ),
+    beforeEnter: AuthGuard
   },
   {
     name: 'login',
@@ -51,16 +56,6 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
-
-router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} - Expenses`
-
-  if (!window.uid && to.name !== 'login') {
-    next({ name: 'login' })
-  } else {
-    next()
-  }
 })
 
 export default router

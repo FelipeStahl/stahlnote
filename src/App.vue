@@ -45,7 +45,8 @@ export default {
     drawer: true,
     }),
   mounted () {
-    this.$firebase.auth().onAuthStateChanged(user => {
+     this.$root.$emit('Spinner::hide')
+    /*this.$firebase.auth().onAuthStateChanged(user => {
       window.uid = user ? user.uid : null
       this.isLogged = !!user
 
@@ -54,7 +55,7 @@ export default {
       setTimeout(() => {
         this.$root.$emit('Spinner::hide')
       }, 300)
-    })
+    })*/
   }
 }
 </script>

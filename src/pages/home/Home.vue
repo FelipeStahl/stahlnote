@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     getData () {
-      const ref = firebase.database().ref(`/${window.uid}`)
+      const ref = firebase.database().ref(`/aVfv12KLMoa8Xvb9prknOUHpLee2`)
 
       ref.on('value', data => {
         const values = data.val()

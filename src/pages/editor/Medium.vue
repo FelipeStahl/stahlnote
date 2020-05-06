@@ -231,6 +231,7 @@ import {
 } from 'tiptap-extensions'
 import javascript from 'highlight.js/lib/languages/javascript'
 import css from 'highlight.js/lib/languages/css'
+import firebase from '../../firebase'
 
 export default {
   components: {
@@ -296,7 +297,7 @@ export default {
   },
   methods: {
     getData () {
-      const ref = this.$firebase.database().ref(`/${window.uid}`)
+      const ref = firebase.database().ref(`/aVfv12KLMoa8Xvb9prknOUHpLee2`)
         ref.on('value', data => {
         const values = data.val()
         this.expenses = Object.keys(values).map(i => values[i])  
@@ -319,7 +320,7 @@ export default {
 
       try {
         this.$root.$emit('Spinner::show')
-        const ref = this.$firebase.database().ref(window.uid)
+        const ref = firebase.database().ref('/aVfv12KLMoa8Xvb9prknOUHpLee2')
         const id = '-M5-q5FCTqdQkSNcwQFN' // ref.push().key
 
         const payload = {

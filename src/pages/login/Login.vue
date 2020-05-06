@@ -59,6 +59,7 @@
 
 <script>
   import { required, minLength } from 'vuelidate/lib/validators'
+  import firebase from '../../firebase'
   export default {
     props: {
       source: String,
@@ -98,7 +99,7 @@
       const { usuario, senha } = this
 
       try {
-        const res = await this.$firebase.auth().signInWithEmailAndPassword(usuario, senha)
+        const res = await firebase.auth().signInWithEmailAndPassword(usuario, senha)
 
         window.uid = res.user.uid
 

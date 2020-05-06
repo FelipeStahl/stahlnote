@@ -34,6 +34,7 @@
 import moment from 'moment'
 import groupBy from 'lodash.groupby'
 import ExpenseListItem from './ExpenseListItem'
+import firebase from '../../firebase'
 
 export default {
   name: 'ExpensesList',
@@ -95,7 +96,7 @@ export default {
   },
   methods: {
     getData () {
-      const ref = this.$firebase.database().ref(`/${window.uid}`)
+      const ref = firebase.database().ref(`/aVfv12KLMoa8Xvb9prknOUHpLee2`)
 
       ref.on('value', snapshot => {
         const values = snapshot.val()

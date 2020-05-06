@@ -166,6 +166,7 @@ import {
   Underline,
   History,
 } from 'tiptap-extensions'
+import firebase from '../../firebase'
 export default {
   components: {
     EditorContent,
@@ -237,7 +238,7 @@ export default {
   },
   methods: {
     getData () {
-      const ref = this.$firebase.database().ref(`/${window.uid}`)
+      const ref = firebase.database().ref(`/aVfv12KLMoa8Xvb9prknOUHpLee2`)
         ref.on('value', data => {
         const values = data.val()
         this.expenses = Object.keys(values).map(i => values[i])  
@@ -267,7 +268,7 @@ export default {
 
       try {
         this.$root.$emit('Spinner::show')
-        const ref = this.$firebase.database().ref(window.uid)
+        const ref = firebase.database().ref(window.uid)
         const id = '-M5-q5FCTqdQkSNcwQFN' // ref.push().key
 
         const payload = {

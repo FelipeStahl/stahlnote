@@ -5,10 +5,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    snackbar: {}
   },
   mutations: {
+    SET_SNACKBAR(state, snackbar){
+      state.snackbar = snackbar
+    }
   },
   actions: {
+    setSnackbar({commit}, snackbar){
+      commit('SET_SNACKBAR', snackbar)
+    }
   },
   modules: {
   }

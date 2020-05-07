@@ -1,5 +1,18 @@
 <template>
-  <v-container
+  <v-app id="login">    
+    <v-app-bar
+      app
+      clipped-left
+    >
+      <v-toolbar-title>Login</v-toolbar-title>
+    </v-app-bar>
+
+    <v-content>
+      <v-container
+        class="fill-height"
+        fluid
+      >
+        <v-container
         class="fill-height"
         fluid
       >
@@ -55,15 +68,28 @@
           </v-col>
         </v-row>
       </v-container>
+      </v-container>
+    </v-content>
+
+    <v-footer app>
+      <span>&copy; 2020</span>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
-  import { required, minLength } from 'vuelidate/lib/validators'
-  export default {
-    props: {
+import { required, minLength } from 'vuelidate/lib/validators'
+import firebase from '../firebase'
+
+export default {
+  name: 'Login',
+  props: {
       source: String,
     },
-    data: () => ({
+  components: {
+    
+  },
+  data: () => ({
       usuario: '',
       senha: '',
       submitStatus: null
@@ -76,8 +102,8 @@
         required,
         minLength: minLength(4) 
       }
-    },
-    computed: {
+  },
+  computed: {
       userError () {
         const errors = []
         if (!this.$v.usuario.$dirty) return errors
@@ -94,33 +120,40 @@
     },
     methods: {
       async doLogin () {
-      this.loading = true
-      const { usuario, senha } = this
+        this.loading = true
+        const { usuario, senha } = this
+        try {
+          const res = await firebase.auth().signInWithEmailAndPassword(usuario, senha)
 
-      try {
-        const res = await this.$firebase.auth().signInWithEmailAndPassword(usuario, senha)
+          window.uid = res.user.uid
 
-        window.uid = res.user.uid
+          this.$router.push({ name: 'Home' })
+        } catch (err) {
+          let message = ''
 
-        this.$router.push({ name: 'Home' })
-      } catch (err) {
-        let message = ''
+          switch (err.code) {
+            case 'auth/user-not-found':
+              message = 'Não foi possível localizar o usuário.'
+              break
+            case 'auth/wrong-password':
+              message = 'Senha inválida'
+              break
+            default:
+              message = 'Não foi possível fazer login, tente novamente'
+          }
+          this.$store.dispatch('setSnackbar',{
+            showing:true,
+            text: message
+          })
 
-        switch (err.code) {
-          case 'auth/user-not-found':
-            message = 'Não foi possível localizar o usuário.'
-            break
-          case 'auth/wrong-password':
-            message = 'Senha inválida'
-            break
-          default:
-            message = 'Não foi possível fazer login, tente novamente'
+          // eslint-disable-next-line no-console
+          console.log("Erro login: " + message)
         }
-        console.log("Erro login: " + message)
+        this.loading = false
       }
-
-      this.loading = false
-    }
-    }
-  }
+    },
+    created () {
+      this.$vuetify.theme.dark = true
+    },
+}
 </script>

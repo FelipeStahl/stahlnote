@@ -1,14 +1,5 @@
 <template>
-  <v-app id="login">    
-    <v-app-bar
-      app
-      clipped-left
-    >
-      <v-toolbar-title>Login</v-toolbar-title>
-    </v-app-bar>
-
-    <v-content>
-      <v-container
+  <v-container
         class="fill-height"
         fluid
       >
@@ -62,19 +53,13 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn @click="doLogin()" color="primary">Login</v-btn>
+                <v-btn @click="doLogin()" color="primary" :loading="loading" :disabled="loading">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
         </v-row>
       </v-container>
       </v-container>
-    </v-content>
-
-    <v-footer app>
-      <span>&copy; 2020</span>
-    </v-footer>
-  </v-app>
 </template>
 
 <script>
@@ -92,7 +77,8 @@ export default {
   data: () => ({
       usuario: '',
       senha: '',
-      submitStatus: null
+      submitStatus: null,
+      loading: false,
     }),
     validations: {
       usuario: { 
@@ -122,38 +108,44 @@ export default {
       async doLogin () {
         this.loading = true
         const { usuario, senha } = this
-        try {
-          const res = await firebase.auth().signInWithEmailAndPassword(usuario, senha)
-
-          window.uid = res.user.uid
-
-          this.$router.push({ name: 'Home' })
-        } catch (err) {
-          let message = ''
-
-          switch (err.code) {
-            case 'auth/user-not-found':
-              message = 'Não foi possível localizar o usuário.'
-              break
-            case 'auth/wrong-password':
-              message = 'Senha inválida'
-              break
-            default:
-              message = 'Não foi possível fazer login, tente novamente'
-          }
-          this.$store.dispatch('setSnackbar',{
+        if(usuario == "" || senha == ""){
+          this.$store.dispatch('setInfoError',{
             showing:true,
-            text: message
+            text: "Preencha usuário ou senha"
           })
+          this.senha = ""
+        }else{
+          try {
+            const res = await firebase.auth().signInWithEmailAndPassword(usuario, senha)
 
-          // eslint-disable-next-line no-console
-          console.log("Erro login: " + message)
-        }
+            window.uid = res.user.uid
+
+            this.$router.push({ name: 'home' })
+          } catch (err) {
+            let message = ''
+
+            switch (err.code) {
+              case 'auth/user-not-found':
+                message = 'Não foi possível localizar o usuário.'
+                break
+              case 'auth/wrong-password':
+                message = 'Senha inválida'
+                break
+              default:
+                message = 'Não foi possível fazer login, tente novamente'
+            }
+            this.$store.dispatch('setInfoError',{
+              showing:true,
+              text: message
+            })
+            this.senha = ""
+          }
+        }      
         this.loading = false
       }
     },
     created () {
-      this.$vuetify.theme.dark = true
+      //this.$vuetify.theme.dark = true
     },
 }
 </script>

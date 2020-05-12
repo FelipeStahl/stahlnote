@@ -1,12 +1,13 @@
 <template>
-    <v-snackbar
-      v-model="snackbar.showing"
+    <v-snackbar top
+      color="#8c0000"
+      v-model="infoError.showing"
+      vertical
     >
-      {{ snackbar.text }}
-      <v-btn
-        color="pink"
+      {{ infoError.text }}
+      <v-btn     
         text
-        @click="snackbar.showing = false"
+        @click="infoError.showing = false"
       >
         Fechar
       </v-btn>
@@ -18,7 +19,7 @@ import {mapState} from 'vuex';
 
   export default {
     computed: {
-        ...mapState(["snackbar"])
+        ...mapState(["infoError"])
     },
     data: () => ({
       

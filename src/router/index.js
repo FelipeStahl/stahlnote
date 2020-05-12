@@ -12,6 +12,16 @@ const routes = [
       icon: 'home', title: 'Home'
     },
     component: () => import(/* webpackChunkName: "home" */ '../views/Home'),
+    beforeEnter: AuthGuard
+  },
+  {
+    path: '/about',
+    name: 'About',
+    meta: {
+      icon: 'home', title: 'Sobre'
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/About'),
+    beforeEnter: AuthGuard
   },
   {
     path: '/editor',

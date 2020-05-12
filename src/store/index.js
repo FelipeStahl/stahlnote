@@ -5,16 +5,23 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    snackbar: {}
+    infoError: {},
+    conectado: false
   },
   mutations: {
-    SET_SNACKBAR(state, snackbar){
-      state.snackbar = snackbar
+    SET_INFOERROR(state, infoError){
+      state.infoError = infoError
+    },
+    SET_CONECTADO(state, conectado){
+      state.conectado = conectado
     }
   },
   actions: {
-    setSnackbar({commit}, snackbar){
-      commit('SET_SNACKBAR', snackbar)
+    setInfoError({commit}, infoError){
+      commit('SET_INFOERROR', infoError)
+    },
+    setConectado({commit}, conectado){
+      commit('SET_CONECTADO', conectado)
     }
   },
   modules: {

@@ -27,9 +27,9 @@ const routes = [
     path: '/editor',
     name: 'editor',
     meta: {
-      icon: 'home', title: 'Editor Básico'
+      icon: 'home', title: 'Editor'
     },
-    component: () => import(/* webpackChunkName: "editor" */ '../pages/editor/Basic'),
+    component: () => import(/* webpackChunkName: "editor" */ '../views/Editor'),
     beforeEnter: AuthGuard
   },
   {

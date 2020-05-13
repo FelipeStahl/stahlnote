@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     infoError: {},
-    conectado: false
+    conectado: false,
+    carregando: true
   },
   mutations: {
     SET_INFOERROR(state, infoError){
@@ -14,6 +15,9 @@ export default new Vuex.Store({
     },
     SET_CONECTADO(state, conectado){
       state.conectado = conectado
+    },
+    SET_CARREGANDO(state, carregando){
+      state.carregando = carregando
     }
   },
   actions: {
@@ -22,6 +26,9 @@ export default new Vuex.Store({
     },
     setConectado({commit}, conectado){
       commit('SET_CONECTADO', conectado)
+    },
+    setCarregando({commit}, carregando){
+      commit('SET_CARREGANDO', carregando)
     }
   },
   modules: {

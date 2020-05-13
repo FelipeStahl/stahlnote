@@ -40,6 +40,12 @@
     </v-app-bar>
 
     <v-content>
+      <v-progress-circular
+      :size="50"
+      color="primary"
+      indeterminate
+      v-if="carregando"
+    ></v-progress-circular>
       <router-view />
     </v-content>
   </v-app>
@@ -58,16 +64,19 @@ export default {
     InfoError
   },
   computed: {
-    ...mapState(["conectado"])
+    ...mapState(["conectado", "carregando"])
   },
   data: () => ({ 
     drawer: null,
     }),
-  mounted () {
-     
-  },
     created () {
 
+    },
+    beforeMount (){
+      this.$store.dispatch('setCarregando', true)
+    },
+    mounted () {
+      this.$store.dispatch('setCarregando', false)
     },
     methods: {
         logout() {
@@ -78,3 +87,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.v-progress-circular {
+  margin: 1rem;
+}
+</style>
